@@ -15,6 +15,8 @@ export default function AdminLayout({
 }
 
 function Navbar() {
+
+  
   return (
     <header className="flex h-12 shadow bg-background z-10">
       <nav className="flex gap-4 container">
@@ -24,6 +26,8 @@ function Navbar() {
           </Link>
           <Badge>Admin</Badge>
         </div>
+
+        
         <Link
           className="hover:bg-accent/10 flex items-center px-2"
           href="/admin/courses"

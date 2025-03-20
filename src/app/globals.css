@@ -1,7 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+
+.container {
+  max-width: var(--container-screens-sm, 100%);
+  padding-left: var(--container-padding, 1rem);
+  padding-right: var(--container-padding, 1rem);
+  margin-left: auto;
+  margin-right: auto;
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -113,10 +121,11 @@
 }
 
 @layer base {
-  * {
+  /* * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
-  }
+  } */
 }

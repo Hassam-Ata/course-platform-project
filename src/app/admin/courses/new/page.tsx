@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/PageHeader"
-import { CourseForm } from "@/features/courses/components/CourseForm"
+import { PageHeader } from "@/components/PageHeader";
+import { CourseForm } from "@/features/courses/components/CourseForm";
 
 export default function NewCoursePage() {
   return (
@@ -7,5 +7,5 @@ export default function NewCoursePage() {
       <PageHeader title="New Course" />
       <CourseForm />
     </div>
-  )
+  );
 }

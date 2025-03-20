@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-
-
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,13 +17,20 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body className={`antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+          {children}
+          <Toaster />
+
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

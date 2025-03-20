@@ -44,8 +44,8 @@ export function syncClerkUserMetadata(user: {
 
 
 async function getUser(id: string) {
-    "use cache"
-    cacheTag(getUserIdTag(id))
+    // "use cache"
+    // cacheTag(getUserIdTag(id))
     console.log("Get user function has been called")
   
     return db.query.UserTable.findFirst({
