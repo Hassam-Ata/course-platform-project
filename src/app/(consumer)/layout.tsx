@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button"
-import { canAccessAdminPages } from "@/permissions/general"
-import { getCurrentUser } from "@/services/clerk"
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
-import Link from "next/link"
-import { ReactNode, Suspense } from "react"
+import { Button } from "@/components/ui/button";
+import { canAccessAdminPages } from "@/permissions/general";
+import { getCurrentUser } from "@/services/clerk";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+import { ReactNode, Suspense } from "react";
 
 export default function ConsumerLayout({
   children,
@@ -13,7 +13,7 @@ export default function ConsumerLayout({
       <Navbar />
       {children}
     </>
-  )
+  );
 }
 
 function Navbar() {
@@ -41,6 +41,7 @@ function Navbar() {
             >
               Purchase History
             </Link>
+
             <div className="size-8 self-center">
               <UserButton
                 appearance={{
@@ -61,16 +62,17 @@ function Navbar() {
         </Suspense>
       </nav>
     </header>
-  )
+  );
 }
 
 async function AdminLink() {
-  const user = await getCurrentUser()
-  if (!canAccessAdminPages(user)) return null
+  const user = await getCurrentUser();
+  console.log(user.user?.name);
 
+  if (!canAccessAdminPages(user)) return null;
   return (
     <Link className="hover:bg-accent/10 flex items-center px-2" href="/admin">
       Admin
     </Link>
-  )
+  );
 }
