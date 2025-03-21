@@ -1,5 +1,5 @@
-import { ActionButton } from "@/components/ActionButton"
-import { Button } from "@/components/ui/button"
+import { ActionButton } from "@/components/ActionButton";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -7,22 +7,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { formatPlural } from "@/lib/formatters"
-import { Trash2Icon } from "lucide-react"
-import Link from "next/link"
-import { deleteCourse } from "../actions/courses"
+} from "@/components/ui/table";
+import { formatPlural } from "@/lib/formatters";
+import { Trash2Icon } from "lucide-react";
+import Link from "next/link";
+import { deleteCourse } from "../actions/courses";
 
 export function CourseTable({
   courses,
 }: {
   courses: {
-    id: string
-    name: string
-    sectionsCount: number
-    lessonsCount: number
-    studentsCount: number
-  }[]
+    id: string;
+    name: string;
+    sectionsCount: number;
+    lessonsCount: number;
+    studentsCount: number;
+  }[];
 }) {
   return (
     <Table>
@@ -39,7 +39,7 @@ export function CourseTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {courses.map(course => (
+        {courses.map((course) => (
           <TableRow key={course.id}>
             <TableCell>
               <div className="flex flex-col gap-1">
@@ -77,5 +77,5 @@ export function CourseTable({
         ))}
       </TableBody>
     </Table>
-  )
+  );
 }

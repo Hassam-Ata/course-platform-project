@@ -1,7 +1,11 @@
-import { ComponentPropsWithRef, useTransition } from "react";
+"use client"
+
+import { ComponentPropsWithRef, ReactNode, useTransition } from "react";
 import { Button } from "./ui/button";
 import { Loader2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 export function ActionButton({
     action,
@@ -17,10 +21,11 @@ export function ActionButton({
       function performAction() {
         startTransition(async () => {
           const data = await action()
-          actionToast({ actionData: data })
+          toast(data.message)
         })
       }
-  
+
+
       if (requireAreYouSure) {
         return (
           <AlertDialog open={isLoading ? true : undefined}>
@@ -45,6 +50,9 @@ export function ActionButton({
         )
       }
   
+  
+     
+  
       return (
         <Button {...props} disabled={isLoading} onClick={performAction}>
           <LoadingTextSwap isLoading={isLoading}>
@@ -62,7 +70,7 @@ function LoadingTextSwap({
     children,
   }: {
     isLoading: boolean
-    children: ReactNode
+    children:ReactNode
   }) {
     return (
       <div className="grid items-center justify-items-center">
