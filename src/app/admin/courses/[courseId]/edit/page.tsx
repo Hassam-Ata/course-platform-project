@@ -11,7 +11,9 @@ import { deleteSection } from "@/features/courseSections/actions/sections";
 import { SectionFormDialog } from "@/features/courseSections/components/SectionFormDialog";
 import { SortableSectionList } from "@/features/courseSections/components/SortableSectionList";
 import { getCourseSectionCourseTag } from "@/features/courseSections/db/cache";
-import { getLessonCourseTag } from "@/features/lessons/db/cache/lesson";
+import { LessonFormDialog } from "@/features/lessons/components/LessonFormDialog";
+import { SortableLessonList } from "@/features/lessons/components/SortableLessonList";
+import { getLessonCourseTag } from "@/features/lessons/db/cache/lessons";
 import { cn } from "@/lib/utils";
 import { asc, eq } from "drizzle-orm";
 import { EyeClosed, PlusIcon, Trash2Icon } from "lucide-react";
@@ -56,9 +58,40 @@ export default async function EditCoursePage({
               />
             </CardContent>
           </Card>
-          
 
-
+          <hr className="my-4" />
+          {course.courseSections.map((section) => (
+            <Card key={section.id}>
+              <CardHeader className="flex items-center flex-row justify-between gap-4">
+                <CardTitle
+                  className={cn(
+                    "flex items-center gap-2",
+                    section.status === "private" && "text-muted-foreground"
+                  )}
+                >
+                  {section.status === "private" && <EyeClosed />}
+                  {section.name}
+                </CardTitle>
+                <LessonFormDialog
+                  defaultSectionId={section.id}
+                  sections={course.courseSections}
+                >
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <PlusIcon />
+                      New Lesson
+                    </Button>
+                  </DialogTrigger>
+                </LessonFormDialog>
+              </CardHeader>
+              <CardContent>
+                <SortableLessonList
+                  sections={course.courseSections}
+                  lessons={section.lessons}
+                />
+              </CardContent>
+            </Card>
+          ))}
         </TabsContent>
       </Tabs>
     </div>
