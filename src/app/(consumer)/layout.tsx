@@ -41,7 +41,6 @@ function Navbar() {
             >
               Purchase History
             </Link>
-
             <div className="size-8 self-center">
               <UserButton
                 appearance={{
@@ -67,9 +66,8 @@ function Navbar() {
 
 async function AdminLink() {
   const user = await getCurrentUser();
-  console.log(user.user?.name);
-
   if (!canAccessAdminPages(user)) return null;
+
   return (
     <Link className="hover:bg-accent/10 flex items-center px-2" href="/admin">
       Admin
