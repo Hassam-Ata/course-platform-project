@@ -1,72 +1,30 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import arcjet, { detectBot, shield, slidingWindow } from "@arcjet/next";
+import { insertUser } from "@/features/users/db/users"
+import { syncClerkUserMetadata } from "@/services/clerk"
+import { currentUser } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
 
-import { NextResponse } from "next/server";
-import { env } from "@/data/env/server";
-import { setUserCountryHeader } from "@/lib/userCountryHeader";
+export async function GET(request: Request) {
+  const user = await currentUser()
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/api(.*)",
-  "/courses/:courseId/lessons/:lessonId",
-  "/products(.*)",
-]);
-
-const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
-
-const aj = arcjet({
-  key: env.ARCJET_KEY,
-  rules: [
-    shield({ mode: "LIVE" }),
-    detectBot({
-      mode: "LIVE",
-      allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:MONITOR", "CATEGORY:PREVIEW"],
-    }),
-    slidingWindow({
-      mode: "LIVE",
-      interval: "1m",
-      max: 100,
-    }),
-  ],
-});
-
-export default clerkMiddleware(async (auth, req) => {
-  const decision = await aj.protect(
-    env.TEST_IP_ADDRESS
-      ? { ...req, ip: env.TEST_IP_ADDRESS, headers: req.headers }
-      : req
-  );
-
-  if (decision.isDenied()) {
-    return new NextResponse(null, { status: 403 });
+  if (user == null) return new Response("User not found", { status: 500 })
+  if (user.fullName == null) {
+    return new Response("User name missing", { status: 500 })
+  }
+  if (user.primaryEmailAddress?.emailAddress == null) {
+    return new Response("User email missing", { status: 500 })
   }
 
-  if (isAdminRoute(req)) {
-    const user = await auth.protect();
-    if (user.sessionClaims.role !== "admin") {
-      return new NextResponse(null, { status: 404 });
-    }
-  }
+  const dbUser = await insertUser({
+    clerkUserId: user.id,
+    name: user.fullName,
+    email: user.primaryEmailAddress.emailAddress,
+    imageUrl: user.imageUrl,
+    role: user.publicMetadata.role ?? "user",
+  })
 
-  if (!isPublicRoute(req)) {
-    await auth.protect();
-  }
+  await syncClerkUserMetadata(dbUser)
 
-  if (!decision.ip.isVpn() && !decision.ip.isProxy()) {
-    const headers = new Headers(req.headers);
-    setUserCountryHeader(headers, decision.ip.country);
+  await new Promise(res => setTimeout(res, 100))
 
-    return NextResponse.next({ request: { headers } });
-  }
-});
-
-export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
-  ],
-};
+  return NextResponse.redirect(request.headers.get("referer") ?? "/")
+}

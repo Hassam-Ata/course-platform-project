@@ -127,5 +127,31 @@
 
   body {
     @apply bg-background text-foreground;
-  } */
+  } 
+    */
 }
+
+
+@keyframes borderShift {
+  0% {
+    border-color: #00f0ff;
+  }
+  25% {
+    border-color: #0066ff;
+  }
+  50% {
+    border-color: #00ffcc;
+  }
+  75% {
+    border-color: #33ccff;
+  }
+  100% {
+    border-color: #00f0ff;
+  }
+}
+
+.animated-border {
+  animation: borderShift 6s linear infinite;
+  border-style: solid;
+}
+
