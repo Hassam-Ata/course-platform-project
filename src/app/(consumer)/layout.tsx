@@ -23,7 +23,7 @@ function Navbar() {
     <header className="flex h-16 bg-white/10 backdrop-blur-md border-2 border-transparent rounded-xl animated-border shadow-md z-50 relative mx-4 mt-4 px-4">
       <nav className="flex items-center justify-between w-full max-w-7xl mx-auto gap-4">
         <Link
-          className="text-xl font-semibold text-white tracking-wide hover:underline transition"
+          className="text-xl font-bold text-white tracking-wide hover:underline transition"
           href="/"
         >
           Course Hub
