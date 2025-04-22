@@ -40,7 +40,25 @@ export const Vortex = (props: VortexProps) => {
   const zOff = 0.0005;
   const backgroundColor = props.backgroundColor || "#000000";
   let tick = 0;
-  const noise3D = createNoise3D();
+  // const noise3D = createNoise3D();
+
+  const noise3DRef = useRef<ReturnType<typeof createNoise3D> | null>(null);
+
+  useEffect(() => {
+    noise3DRef.current = createNoise3D();
+    setup(); // move setup inside this useEffect so it waits for noise3D to be ready
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleResize = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (canvas && ctx) {
+      resize(canvas, ctx);
+    }
+  };
+
   let particleProps = new Float32Array(particlePropsLength);
   let center: [number, number] = [0, 0];
 
@@ -72,7 +90,7 @@ export const Vortex = (props: VortexProps) => {
 
   const initParticles = () => {
     tick = 0;
-    // simplex = new SimplexNoise();
+    //  simplex = new SimplexNoise();
     particleProps = new Float32Array(particlePropsLength);
 
     for (let i = 0; i < particlePropsLength; i += particlePropCount) {
@@ -134,18 +152,23 @@ export const Vortex = (props: VortexProps) => {
       i9 = 8 + i;
     let n, x, y, vx, vy, life, ttl, speed, x2, y2, radius, hue;
 
-    x = particleProps[i]??0;
-    y = particleProps[i2]??0;
-    n = noise3D(x * xOff, y * yOff, tick * zOff) * noiseSteps * TAU;
+    x = particleProps[i] ?? 0;
+    y = particleProps[i2] ?? 0;
+    // n = noise3D(x * xOff, y * yOff, tick * zOff) * noiseSteps * TAU;
+    n =
+      (noise3DRef.current?.(x * xOff, y * yOff, tick * zOff) ?? 0) *
+      noiseSteps *
+      TAU;
+
     vx = lerp(particleProps[i3] ?? 0, Math.cos(n), 0.5);
     vy = lerp(particleProps[i4] ?? 0, Math.sin(n), 0.5);
-    life = particleProps[i5]??0;
-    ttl = particleProps[i6]??0;
-    speed = particleProps[i7]??0;
+    life = particleProps[i5] ?? 0;
+    ttl = particleProps[i6] ?? 0;
+    speed = particleProps[i7] ?? 0;
     x2 = x + vx * speed;
     y2 = y + vy * speed;
-    radius = particleProps[i8]??0;
-    hue = particleProps[i9]??0;
+    radius = particleProps[i8] ?? 0;
+    hue = particleProps[i9] ?? 0;
 
     drawParticle(x, y, x2, y2, life, ttl, radius, hue, ctx);
 
