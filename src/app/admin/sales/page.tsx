@@ -11,10 +11,17 @@ export default async function PurchasesPage() {
   const purchases = await getPurchases()
 
   return (
-    <div className="container my-6">
-      <PageHeader title="Sales" />
+    <div className="container my-6 font-sans text-gray-100 bg-black min-h-screen">
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl font-bold text-white">Sales</h1>
+        <p className="text-sm text-gray-400 mt-2">
+          View all recent sales including refunded orders.
+        </p>
+      </div>
 
-      <PurchaseTable purchases={purchases} />
+      <div className="rounded-xl border border-gray-700 bg-zinc-900 p-6 shadow-lg">
+        <PurchaseTable purchases={purchases} />
+      </div>
     </div>
   )
 }
