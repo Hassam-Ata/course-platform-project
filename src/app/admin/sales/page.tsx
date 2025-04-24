@@ -1,4 +1,3 @@
-import { PageHeader } from "@/components/PageHeader"
 import { db } from "@/drizzle/db"
 import { PurchaseTable as DbPurchaseTable } from "@/drizzle/schema"
 import { PurchaseTable } from "@/features/purchases/components/PurchaseTable"

@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/PageHeader";
-import Link from "next/link";
 import { db } from "@/drizzle/db";
 import {
   CourseSectionTable,
@@ -8,13 +6,14 @@ import {
   LessonTable,
   UserCourseAccessTable,
 } from "@/drizzle/schema";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getCourseGlobalTag } from "@/features/courses/db/cache/courses";
-import { asc, countDistinct, eq } from "drizzle-orm";
 import { getUserCourseAccessGlobalTag } from "@/features/courses/db/cache/userCourseAccess";
 import { getCourseSectionGlobalTag } from "@/features/courseSections/db/cache";
 import { getLessonGlobalTag } from "@/features/lessons/db/cache/lessons";
+import { asc, countDistinct, eq } from "drizzle-orm";
 import { Pencil, Trash2 } from "lucide-react";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import Link from "next/link";
 
 export default async function CoursesPage() {
   const courses = await getCourses();

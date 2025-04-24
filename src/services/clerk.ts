@@ -4,7 +4,6 @@ import { getUserIdTag } from "@/features/users/db/cache";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { redirect } from "next/navigation";
 
 const client = await clerkClient();
 

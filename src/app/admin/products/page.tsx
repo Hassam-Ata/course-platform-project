@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/PageHeader";
-import Link from "next/link";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { db } from "@/drizzle/db";
 import {
   CourseProductTable,
   ProductTable as DbProductTable,
   PurchaseTable,
 } from "@/drizzle/schema";
-import { asc, countDistinct, eq } from "drizzle-orm";
 import { getProductGlobalTag } from "@/features/products/db/cache";
+import { asc, countDistinct, eq } from "drizzle-orm";
 import { Pencil, Trash2 } from "lucide-react";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function ProductsPage() {
   const products = await getProducts();
@@ -50,11 +50,13 @@ export default async function ProductsPage() {
                 <td className="px-6 py-4 font-medium">
                   <div className="flex items-center gap-3">
                     {product.imageUrl && (
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="w-10 h-10 rounded object-cover border border-white/20"
-                      />
+                   <Image
+                   src={product.imageUrl}
+                   alt={product.name}
+                   width={40}
+                   height={40}
+                   className="rounded object-cover border border-white/20"
+                 />
                     )}
                     <span>{product.name}</span>
                   </div>
