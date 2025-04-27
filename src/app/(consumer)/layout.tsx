@@ -36,6 +36,12 @@ function Navbar() {
                 <AdminLink />
                 <Link
                   className="text-sm font-medium text-white/80 px-3 py-1 rounded-full hover:bg-white/20 hover:scale-[1.05] transition-all duration-200"
+                  href="/chatbot"
+                >
+                  AI Chatbot
+                </Link>
+                <Link
+                  className="text-sm font-medium text-white/80 px-3 py-1 rounded-full hover:bg-white/20 hover:scale-[1.05] transition-all duration-200"
                   href="/courses"
                 >
                   My Courses
